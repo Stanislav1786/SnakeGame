@@ -1,12 +1,23 @@
+const ROWS = 10
+const COLUMNS = 10
+
+const CELL_SIZE = 50
+const CELL_MARGIN = 3
+const GAME_PADDING = 10
+
+const FOOD_COLOR = 'green'
+const SNAKE_COLOR = 'gray'
+const FREE_COLOR = 'rgb(240, 240, 240)'
+
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
 
 
-canvas.width = 500
-canvas.height = 500
+canvas.width = CELL_SIZE * COLUMNS + (COLUMNS - 1) * CELL_MARGIN + 2 * GAME_PADDING
+canvas.height = CELL_SIZE * ROWS + (ROWS - 1) * CELL_MARGIN + 2 * GAME_PADDING
 
 
-const map = createGameMap(5, 5)
+const map = createGameMap(COLUMNS, ROWS)
 
 
 getRandomFreeCell(map).food = true
@@ -28,12 +39,20 @@ function loop(timestamp) {
 function drawGameMap(map) {
     for (const cell of map.flat()) {
         const param = {
-            x: cell.x * 50,
-            y: cell.y * 50,
-            width: 50,
-            height: 50,
-            fillColor: 'yellow'
+            x: GAME_PADDING + cell.x * (CELL_SIZE + CELL_MARGIN),
+            y: GAME_PADDING + cell.y * (CELL_SIZE + CELL_MARGIN),
+            width: CELL_SIZE,
+            height: CELL_SIZE,
+            fillColor: FREE_COLOR
 
+        }
+
+        if (cell.food) {
+            param.fillColor = FOOD_COLOR
+        }
+
+        if (cell.snake) {
+            param.fillColor = SNAKE_COLOR
         }
 
 
