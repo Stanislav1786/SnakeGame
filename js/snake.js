@@ -42,7 +42,7 @@ function getRandomFreeCell(map) {
         freeCells.push(cell)
     }
 
-    const index = Math.floor(math.random() * freeCells.length)
-    return freeCells(index)
+    const index = Math.floor(Math.random() * freeCells.length)
+    return freeCells[index]
 
 }

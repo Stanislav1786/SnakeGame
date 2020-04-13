@@ -6,18 +6,14 @@ canvas.width = 500
 canvas.height = 500
 
 
-const param = {
-    x: 10,
-    y: 100,
-    width: 50,
-    height: 50,
-    fillColor: "green"
-}
+const map = createGameMap(5, 5)
 
-drawRect(param)
+
+getRandomFreeCell(map).food = true
+getRandomFreeCell(map).snake = true
+
 
 requestAnimationFrame(loop)
-
 
 
 function loop(timestamp) {
@@ -25,5 +21,24 @@ function loop(timestamp) {
 
     clearCanvas()
 
-    drawRect(param)
+
+    drawGameMap(map)
+}
+
+function drawGameMap(map) {
+    for (const cell of map.flat()) {
+        const param = {
+            x: cell.x * 50,
+            y: cell.y * 50,
+            width: 50,
+            height: 50,
+            fillColor: 'yellow'
+
+        }
+
+
+        drawRect(param)
+
+
+    }
 }
