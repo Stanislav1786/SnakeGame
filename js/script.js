@@ -1,5 +1,6 @@
 const ROWS = 10
 const COLUMNS = 10
+const COOLDOWN = 250
 
 const CELL_SIZE = 50
 const CELL_MARGIN = 3
@@ -21,10 +22,17 @@ const map = createGameMap(COLUMNS, ROWS)
 
 
 getRandomFreeCell(map).food = true
-getRandomFreeCell(map).snake = true
+
+
+const snake = [getRandomFreeCell(map)]
+snake[0].snake = true
+
+let snakeDirect = 'top'
 
 
 requestAnimationFrame(loop)
+
+let prevTick = 0
 
 
 function loop(timestamp) {
@@ -32,7 +40,13 @@ function loop(timestamp) {
 
     clearCanvas()
 
+    if (prevTick + COOLDOWN <= timestamp) {
+        moveSnake()
+        prevTick = timestamp
 
+    }
+
+    
     drawGameMap(map)
 }
 
@@ -58,6 +72,6 @@ function drawGameMap(map) {
 
         drawRect(param)
 
-
+        
     }
 }
