@@ -27,7 +27,7 @@ getRandomFreeCell(map).food = true
 const snake = [getRandomFreeCell(map)]
 snake[0].snake = true
 
-let snakeDirect = 'top'
+let snakeDirect = 'down'
 
 
 requestAnimationFrame(loop)
@@ -75,3 +75,23 @@ function drawGameMap(map) {
         
     }
 }
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "ArrowUp") {
+        snakeDirect = "up"
+    }
+
+    else if (event.key === "ArrowDown") {
+        snakeDirect = "down"
+    }
+
+    else if (event.key === "ArrowLeft") {
+        snakeDirect = "left"
+    }
+
+    else if (event.key === "ArrowRight") {
+        snakeDirect = "right"
+    }
+
+
+}) 

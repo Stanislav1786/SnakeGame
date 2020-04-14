@@ -83,7 +83,7 @@ else if (snakeDirect === 'right') {
       snake[0] = getCell(snake[0].x + 1, snake[0].y)
 }
 
-else if (snakeDirect === 'top') {
+else if (snakeDirect === 'up') {
       snake[0] = getCell(snake[0].x, snake[0].y - 1)
 }
 
