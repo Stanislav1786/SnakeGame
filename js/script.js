@@ -1,6 +1,7 @@
 const ROWS = 10
 const COLUMNS = 10
-const COOLDOWN = 250
+const START_COOLDOWN = 250
+const LEVEL_COOLDOWN = 10
 
 const CELL_SIZE = 50
 const CELL_MARGIN = 3
@@ -19,20 +20,31 @@ canvas.height = CELL_SIZE * ROWS + (ROWS - 1) * CELL_MARGIN + 2 * GAME_PADDING
 
 
 const map = createGameMap(COLUMNS, ROWS)
-
+let cooldown = START_COOLDOWN
 
 getRandomFreeCell(map).food = true
+cooldown -= LEVEL_COOLDOWN
+
+const cell = getRandomFreeCell(map)
+// const cell2 = getCell(cell1.x, cell1.y + 1)
+const snake = [cell, cell, cell, cell, cell, cell, cell, cell]
+cell.snake = true
+// cell2.snake = true
 
 
-const snake = [getRandomFreeCell(map)]
-snake[0].snake = true
+let snakeDirect = 'up'
+let nextSnakeDirect = 'up'
+// const snake = [cell, getCell(cell.x, cell.y +1)]
+// snake[0].snake = true
 
-let snakeDirect = 'down'
+
 
 
 requestAnimationFrame(loop)
 
 let prevTick = 0
+let play = true
+
 
 
 function loop(timestamp) {
@@ -40,15 +52,45 @@ function loop(timestamp) {
 
     clearCanvas()
 
-    if (prevTick + COOLDOWN <= timestamp) {
-        moveSnake()
+    if (prevTick + cooldown <= timestamp && play) {
         prevTick = timestamp
+
+        snakeDirect = nextSnakeDirect
+        moveSnake() 
+
+        const head = snake[0]
+        const tail = snake[snake.length - 1]
+
+        if (head.food) {
+            head.food = false
+            snake.push(tail)
+
+            getRandomFreeCell(map).food = true
+        }
+
+
+let isEnd = false
+        for(let i = 1; i < snake.length; i++) {
+            if (snake[i] === snake[0]) {
+                isEnd = true
+                break
+            }
+        }
+
+        if (isEnd) {
+            alert('Game End')
+            play = false
+        }
+
+
+
 
     }
 
     
     drawGameMap(map)
 }
+
 
 function drawGameMap(map) {
     for (const cell of map.flat()) {
@@ -77,20 +119,34 @@ function drawGameMap(map) {
 }
 
 document.addEventListener("keydown", function(event) {
+
     if (event.key === "ArrowUp") {
-        snakeDirect = "up"
-    }
+        if (snake.length === 1 || snakeDirect === "left" || snakeDirect ==="right") {
+            nextSnakeDirect = "up"
+
+        }
+
+        
+            }
 
     else if (event.key === "ArrowDown") {
-        snakeDirect = "down"
+        if (snake.length === 1 || snakeDirect === "left" || snakeDirect ==="right") {
+            nextSnakeDirect = "down" 
+        }
+        
     }
 
     else if (event.key === "ArrowLeft") {
-        snakeDirect = "left"
+
+        if (snake.length === 1 || snakeDirect === "up" || snakeDirect === "down")
+        nextSnakeDirect = "left"
     }
 
     else if (event.key === "ArrowRight") {
-        snakeDirect = "right"
+        if (snake.length === 1 || snakeDirect === "up" || snakeDirect === "down") {
+            nextSnakeDirect = "right"
+    }
+        
     }
 
 

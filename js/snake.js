@@ -75,6 +75,9 @@ for (const cell of map.flat()) {
 
 
 function moveSnake () {
+for (let i = snake.length - 1; i > 0; i--) {
+    snake[i] = snake[i - 1]
+}
 if (snakeDirect === 'left') {
     snake[0] = getCell(snake[0].x - 1, snake[0].y)    
 }
