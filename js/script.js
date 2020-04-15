@@ -19,25 +19,20 @@ canvas.width = CELL_SIZE * COLUMNS + (COLUMNS - 1) * CELL_MARGIN + 2 * GAME_PADD
 canvas.height = CELL_SIZE * ROWS + (ROWS - 1) * CELL_MARGIN + 2 * GAME_PADDING
 
 
-const map = createGameMap(COLUMNS, ROWS)
+let map = createGameMap(COLUMNS, ROWS)
 let cooldown = START_COOLDOWN
 
 getRandomFreeCell(map).food = true
 cooldown -= LEVEL_COOLDOWN
 
 const cell = getRandomFreeCell(map)
-// const cell2 = getCell(cell1.x, cell1.y + 1)
-const snake = [cell, cell, cell, cell, cell, cell, cell, cell]
-cell.snake = true
-// cell2.snake = true
+let snake = [cell]
 
+
+cell.snake = true
 
 let snakeDirect = 'up'
 let nextSnakeDirect = 'up'
-// const snake = [cell, getCell(cell.x, cell.y +1)]
-// snake[0].snake = true
-
-
 
 
 requestAnimationFrame(loop)
@@ -66,10 +61,11 @@ function loop(timestamp) {
             snake.push(tail)
 
             getRandomFreeCell(map).food = true
+            cooldown -= LEVEL_COOLDOWN
         }
 
-
-let isEnd = false
+        else {
+            let isEnd = false
         for(let i = 1; i < snake.length; i++) {
             if (snake[i] === snake[0]) {
                 isEnd = true
@@ -77,10 +73,14 @@ let isEnd = false
             }
         }
 
-        if (isEnd) {
-            alert('Game End')
+                if (isEnd) {
             play = false
         }
+
+    }
+
+
+
 
 
 
@@ -89,6 +89,11 @@ let isEnd = false
 
     
     drawGameMap(map)
+    showState ()  
+
+        if (!play) {
+        drawPaused ()
+    }
 }
 
 
@@ -148,6 +153,16 @@ document.addEventListener("keydown", function(event) {
     }
         
     }
+
+   else if (event.key === 'Enter') {
+    if (play) {
+        return
+    }
+
+    init()
+
+
+   } 
 
 
 }) 
